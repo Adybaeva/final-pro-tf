@@ -11,7 +11,7 @@ module "rds" {
   engine_mode          = "provisioned"
   engine_version       = "5.7"         
   cluster_family       = "aurora-mysql5.7"    #"aurora-postgresql10"
-  cluster_size         = 0                    #0
+  cluster_size         = 1                    #0
   cluster_type         = "regional"           #"regional"
   admin_user           = random_password.rds_admin_username.result
   admin_password       = random_password.rds_password.result
@@ -22,15 +22,6 @@ module "rds" {
   subnets              = module.vpc.database_subnets
   enable_http_endpoint = true
 
-  scaling_configuration = [
-    {
-      auto_pause               = true
-      max_capacity             = 16
-      min_capacity             = 1
-      seconds_until_auto_pause = 300
-      timeout_action           = "ForceApplyCapacityChange"
-    }
-  ]
   tags = {
     Name = "${var.tag_env}-rds"
   }
